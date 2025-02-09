@@ -1,38 +1,65 @@
 import express from "express";
-import controller from "../controller/userController";
+import authenticateToken from "../middleware/auth";
+import usercontroller from "../controller/user";
+import deptcontroller from "../controller/department";
+import doctorcontroller from "../controller/doctor";
 const router=express.Router();
 
+/**
+ * @swagger
+ * openapi: 3.0.0
+ * info:
+ *  title:User,Department,Doctor API
+ *  description:API endpoints for managing users, departments, doctors
+ *  version:1.0.0
+ * servers:
+ *  url:http://localhost:3000
+ *  description:Local Development Server
+ * paths:
+ *  /users:
+ *      post:
+ *          summary: Registers new user in the system.
+ *          description: Retrieve a list of users from JSONPlaceholder. Can be used to populate a list of fake users when prototyping or testing an API.
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type:object
+ *                properties:
+ *                  
+*/
+router.post("/users", (req,res)=>{
+    usercontroller.signup(req,res);
+})
+// router.post("/login", (req,res)=>{
+//     usercontroller.login(req,res);
+// })
 
+// router.get("/users", authenticateToken, usercontroller.getAllusers);
 
-// router.post("/departments", (req,res)=>{
-//     controller.insertDepartment(req,res);
-//     res.status(200).json({message:"Successfully added the user"})
+// router.get("/users/designation/:designation", (req,res)=>{
+//     usercontroller.getselecteduser(req,res);
+
+// })
+
+// router.put("/users", (req,res)=>{
+//     usercontroller.updateuser(req,res);
+// })
+
+// router.delete("/users/:userId", (req,res)=>{
+//     usercontroller.deleteuser(req,res);
+// })
+// router.get("/users/:userId", (req,res)=>{
+//     usercontroller.getuser(req,res);
 // })
 
 
-router.post("/users", (req,res)=>{
-    controller.insertUser(req,res);
-})
-
-router.get("/users", (req,res)=>{
-    controller.getAllusers(req,res);
-})
-
-router.get("/users/designation/:designation", (req,res)=>{
-    controller.getselecteduser(req,res);
-
-})
-
-router.put("/users", (req,res)=>{
-    controller.updateuser(req,res);
-})
-
-router.delete("/users/:userId", (req,res)=>{
-    controller.deleteuser(req,res);
-})
-router.get("/users/:userId", (req,res)=>{
-    controller.getuser(req,res);
-})
+// router.post("/departments", deptcontroller.adddept);
+// router.get("/departments", deptcontroller.getAlldepartments)
+// router.get("/departments/:deptId", deptcontroller.getselecteddept);
+// router.patch("/departments/:deptId", deptcontroller.updateDept);
+// router.post("/doctors", doctorcontroller.addDoctor);
+// router.get("/doctors", doctorcontroller.getAlldoctors);
+// router.get("/doctors/:doctorId", doctorcontroller.getselecteddoctor);
 
 
 export default router;

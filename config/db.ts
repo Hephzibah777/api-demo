@@ -22,6 +22,7 @@ import mysql from "mysql2";
 
 
 import { Sequelize } from "sequelize";
+
 const dbName='HMS';
 const dbUser='root';
 const dbPassword='root';
@@ -29,16 +30,24 @@ const dbPassword='root';
 const sequelize=new Sequelize(dbName, dbUser, dbPassword,{
     host:'localhost',
     dialect:"mysql",
+    logging:console.log
    
 });
 
-export const dbConnect=()=>{
+const dbConnect=()=>{
     sequelize
     .authenticate()
     .then(() => console.log('Successfully connected to the database!'))
     .catch((error) => console.log('Failed to connect the database:', error))
 }
 
+const db={
+    sequelize:sequelize,
+    dbConnect:dbConnect,
+    users:{},
+    departments:{},
+    doctors:{},
+    patients:{},
+}
 
-
-export default sequelize; 
+export default db; 
