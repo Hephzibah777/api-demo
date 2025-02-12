@@ -2,6 +2,18 @@ import { Request,Response } from "express";
 import db from "../config/db";
 import { QueryTypes, Sequelize } from "sequelize";
 
+interface doctorType{
+    id:number,
+    userId:number,
+    name:string,
+    phone:string,
+    specialization:string,
+    salary:string,
+    yearsOfExperience:number,
+    email:string,
+    deptId:number,
+}
+
 async function addDoctor(req:Request,res:Response):Promise<void>{
     try{
         console.log(req.body);
@@ -76,11 +88,58 @@ async function getselecteddoctor(req:Request, res:Response):Promise<void>{
     }
 }
 
+async function deleteselecteddoctor(req:Request, res:Response):Promise<void>{
+    try{
+        const doctorId=req.params.doctorId;
+        if(!doctorId){
+            res.status(400).json({message:"Content cannot be empty"});
+            return;
+        }
+        const doctor=await db.sequelize.query("DELETE from Doctors WHERE id=:doctorId",{
+            replacements:{doctorId:doctorId},
+            type:QueryTypes.DELETE,
+        })
+        res.status(200).json({message:"Doctor details deleted successfully"});
+    }
+    catch(error){
+        res.status(500).json({message:"Error deleting the doctor"});
+    }
+}
+
+async function updateDoctor(req:Request, res:Response):Promise<void>{
+    const body=req.body;
+    const doctorId=req.params.doctorId;
+    const updatedAt=new Date();
+    let col="";
+    Object.keys(body).forEach(key=>{
+        col=col+`${key}`+"="+":"+`${key}`+",";
+    })
+    console.log(col);
+    const doctors:doctorType[]=await db.sequelize.query("SELECT * from Doctors where id=:doctorId",{
+        replacements:{doctorId:doctorId},
+        type:QueryTypes.SELECT,
+    })
+    const query="UPDATE `Doctors` SET" + " " +col + "updatedAt:=updatedAt";
+    if(doctors.length==0){
+        res.status(404).json({message:"Department does not exist"});
+        return;
+    }
+  
+    const result = await db.sequelize.query(query, {
+        replacements: { ...body, updatedAt:updatedAt},
+        type: QueryTypes.UPDATE
+      });
+    res.status(200).json({message:"Successfully Updated the department"});
+    
+ } 
+
 
 
 const doctorcontroller={
     addDoctor:addDoctor,
     getAlldoctors:getAlldoctors,
     getselecteddoctor:getselecteddoctor,
+    deleteselecteddoctor:deleteselecteddoctor,
+    updateDoctor:updateDoctor
 }
 export default doctorcontroller;

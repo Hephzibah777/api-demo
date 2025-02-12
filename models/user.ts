@@ -1,44 +1,37 @@
 
-import { DataTypes } from "sequelize";
+import { DataTypes, Sequelize } from "sequelize";
 import db from "../config/db";
-import User from "./user";
 
-
-const Patient = db.sequelize.define(
-    'Patient',
+const User = db.sequelize.define(
+    'User',
     {
       // Model attributes are defined here
       id: {
         type: DataTypes.INTEGER,
         primaryKey:true,
+        autoIncrement:true,
         allowNull: false,
         unique:true,
-        autoIncrement:true,
-      
       },
-      name: {
+      role: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      phone: {
+      email: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      gender: {
+      password: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      age: {
-        type: DataTypes.INTEGER,
+      createdAt: {
+        type: DataTypes.DATE,
+        defaultValue:Sequelize.fn("now"),
         allowNull: false,
       },
-      address: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-  
+    
     });
 
-
-export default Patient;
+export default User;
 

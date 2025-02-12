@@ -78,7 +78,7 @@ async function login(req:Request, res:Response):Promise<void>{
     res.status(400).json({message:"User does not exist"});
     return;
   }
-
+  
   const isPasswordValid = await bcrypt.compare(password, user[0].password);
   if (!isPasswordValid) {
     res.status(400).send("Invalid credentials.");
@@ -87,6 +87,7 @@ async function login(req:Request, res:Response):Promise<void>{
   const token = jwt.sign({ userId: user[0].id, email:user[0].email, role:user[0].role }, secretKey, {
     expiresIn: "1h",
   });
+  console.log(token);
 
  
   res.json({ token });
@@ -94,8 +95,6 @@ async function login(req:Request, res:Response):Promise<void>{
 catch(error){
   res.status(500).json({ message: "Internal server error" });
 }
-
-
 }
 
 async function getAllusers(req:Request, res:Response):Promise<void>{
@@ -111,7 +110,6 @@ async function getAllusers(req:Request, res:Response):Promise<void>{
       message:"Error insertin the department",
     })
   }
-
 }
 
 async function getselecteduser(req:Request, res:Response):Promise<void>{

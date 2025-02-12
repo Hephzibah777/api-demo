@@ -78,7 +78,7 @@ async function getAlldepartments(req:Request, res:Response):Promise<void>{
     res.send(dept);
     }
     catch(error){
-
+        
     }
 
  }
@@ -105,6 +105,8 @@ async function getAlldepartments(req:Request, res:Response):Promise<void>{
     res.status(200).json({message:"Successfully Updated the department"});
     
  }  
+
+
 
 const deptcontroller={
     adddept:adddept,
